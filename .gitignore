@@ -12,6 +12,7 @@
 input
 train/
 model/
+MNIST_data/
 test/
 test.csv
 train.csv
