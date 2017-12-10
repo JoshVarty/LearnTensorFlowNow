@@ -29,7 +29,7 @@ with graph.as_default():
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
 
-        num_steps = 1000
+        num_steps = 5000
         batch_size = 100
         for step in range(num_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
@@ -43,4 +43,21 @@ with graph.as_default():
                 print("Cost: ", c)
                 print("Accuracy: ", acc * 100.0, "%")
 
+
+        #Test 
+        num_test_batches = int(len(test_images) / 100)
+        total_accuracy = 0
+        total_cost = 0
+        for step in range(num_test_batches):
+            offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
+            batch_images = test_images[offset:(offset + batch_size), :]
+            batch_labels = test_labels[offset:(offset + batch_size), :]
+            feed_dict = {input: batch_images, labels: batch_labels}
+
+            _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
+            total_cost = total_cost + c
+            total_accuracy = total_accuracy + acc
+
+        print("Test Cost: ", total_cost / num_test_batches)
+        print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
 
