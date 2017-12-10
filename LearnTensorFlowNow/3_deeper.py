@@ -14,16 +14,16 @@ with graph.as_default():
 
     layer1_weights = tf.Variable(tf.random_normal([784, 500]))
     layer1_bias = tf.Variable(tf.zeros([500]))
+    net = tf.matmul(input, layer1_weights) + layer1_bias
     
     layer2_weights = tf.Variable(tf.random_normal([500, 500]))
     layer2_bias = tf.Variable(tf.zeros([500]))
+    net = tf.matmul(net, layer2_weights) + layer2_bias
 
     layer3_weights = tf.Variable(tf.random_normal([500, 10]))
     layer3_bias = tf.Variable(tf.zeros([10]))
-
-    net = tf.matmul(input, layer1_weights) + layer1_bias
-    net = tf.matmul(net, layer2_weights) + layer2_bias
     logits = tf.matmul(net, layer3_weights) + layer3_bias
+
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
     learning_rate = 0.001
