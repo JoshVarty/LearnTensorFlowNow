@@ -4,8 +4,6 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 train_images = mnist.train.images;
 train_labels = mnist.train.labels
-test_images = mnist.test.images;
-test_labels = mnist.test.labels
 
 graph = tf.Graph()
 with graph.as_default():
