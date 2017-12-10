@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f8e1ee76-ede2-4873-af30-21a4ddeb0841</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>1_basic.py</StartupFile>
+    <StartupFile>2_graph.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,6 +26,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="1_basic.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_graph.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
