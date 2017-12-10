@@ -14,25 +14,25 @@ with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
     labels = tf.placeholder(tf.float32, shape=(None, 10))
 
-    layer1_weights = tf.Variable(tf.random_normal([3, 3, 1, 16]))
-    layer1_bias = tf.Variable(tf.zeros([16]))
+    layer1_weights = tf.Variable(tf.random_normal([3, 3, 1, 64]))
+    layer1_bias = tf.Variable(tf.zeros([64]))
     net = tf.nn.conv2d(input, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
     net = tf.nn.relu(net) + layer1_bias
     
-    layer2_weights = tf.Variable(tf.random_normal([3, 3, 16, 16]))
-    layer2_bias = tf.Variable(tf.zeros([16]))
+    layer2_weights = tf.Variable(tf.random_normal([3, 3, 64, 64]))
+    layer2_bias = tf.Variable(tf.zeros([64]))
     net = tf.nn.conv2d(net, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
     net = tf.nn.relu(net) + layer2_bias
 
     net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
     
-    layer3_weights = tf.Variable(tf.random_normal([3, 3, 16, 32]))
-    layer3_bias = tf.Variable(tf.zeros([32]))
+    layer3_weights = tf.Variable(tf.random_normal([3, 3, 64, 128]))
+    layer3_bias = tf.Variable(tf.zeros([128]))
     net = tf.nn.conv2d(net, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
     net = tf.nn.relu(net) + layer3_bias
     
-    layer4_weights = tf.Variable(tf.random_normal([3, 3, 32, 32]))
-    layer4_bias = tf.Variable(tf.zeros([32]))
+    layer4_weights = tf.Variable(tf.random_normal([3, 3, 128, 128]))
+    layer4_bias = tf.Variable(tf.zeros([128]))
     net = tf.nn.conv2d(net, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
     net = tf.nn.relu(net) + layer4_bias
 
@@ -47,7 +47,7 @@ with graph.as_default():
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
-    learning_rate = 0.0001
+    learning_rate = 0.0000001
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
