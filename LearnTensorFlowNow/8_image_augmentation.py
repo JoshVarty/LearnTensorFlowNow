@@ -21,7 +21,7 @@ def pad_and_random_crop(input):
     dynamic_shape = tf.shape(input)
     input = tf.image.resize_image_with_crop_or_pad(input, 36, 36)
     input = tf.random_crop(input, dynamic_shape)
-    input = tf.reshape(input, [-1, 32, 32, num_channels])
+    input = tf.reshape(input, [-1, 32, 32, 1])
     return input
 
 graph = tf.Graph()
@@ -32,7 +32,7 @@ with graph.as_default():
 
     net = tf.image.resize_image_with_crop_or_pad(input, target_height=32, target_width=32)
     net = tf.cond(is_training,
-                        lambda: pad_and_random_crop(input),
+                        lambda: pad_and_random_crop(net),
                         lambda: net)
 
     layer1_weights = relu_weight_layer("w_layer1", [3, 3, 1, 64])
