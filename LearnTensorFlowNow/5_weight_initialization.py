@@ -55,7 +55,7 @@ with graph.as_default():
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
-    learning_rate = 0.0000001
+    learning_rate = 0.001
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
@@ -66,7 +66,7 @@ with graph.as_default():
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
 
-        num_steps = 5000
+        num_steps = 1000
         batch_size = 100
         for step in range(num_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
