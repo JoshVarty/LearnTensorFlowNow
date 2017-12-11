@@ -28,6 +28,7 @@ graph = tf.Graph()
 with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
     labels = tf.placeholder(tf.float32, shape=(None, 10))
+    is_training = tf.placeholder(tf.bool)
 
     net = tf.image.resize_image_with_crop_or_pad(input, target_height=32, target_width=32)
     net = tf.cond(is_training,
@@ -122,7 +123,7 @@ with graph.as_default():
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             batch_images = train_images[offset:(offset + batch_size), :]
             batch_labels = train_labels[offset:(offset + batch_size), :]
-            feed_dict = {input: batch_images, labels: batch_labels}
+            feed_dict = {input: batch_images, labels: batch_labels, is_training: True}
 
             _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
 
@@ -140,7 +141,7 @@ with graph.as_default():
             batch_images = test_images[offset:(offset + batch_size)]
             batch_labels = test_labels[offset:(offset + batch_size)]
             x = batch_images.shape
-            feed_dict = {input: batch_images, labels: batch_labels}
+            feed_dict = {input: batch_images, labels: batch_labels, is_training: False}
 
             _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
             total_cost = total_cost + c
