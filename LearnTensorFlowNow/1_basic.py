@@ -7,8 +7,8 @@ train_labels = mnist.train.labels
 
 graph = tf.Graph()
 with graph.as_default():
-    input = tf.placeholder(tf.float32, shape=(None, 784))
-    labels = tf.placeholder(tf.float32, shape=(None, 10))
+    input = tf.placeholder(tf.float32, shape=(100, 784))
+    labels = tf.placeholder(tf.float32, shape=(100, 10))
 
     layer1_weights = tf.Variable(tf.random_normal([784, 10]))
     layer1_bias = tf.Variable(tf.zeros([10]))
@@ -30,6 +30,6 @@ with graph.as_default():
             batch_labels = train_labels[offset:(offset + batch_size), :]
             feed_dict = {input: batch_images, labels: batch_labels}
 
-            _, c, = session.run([optimizer, cost], feed_dict=feed_dict)
+            o, c, = session.run([optimizer, cost], feed_dict=feed_dict)
             print("Cost: ", c)
 
