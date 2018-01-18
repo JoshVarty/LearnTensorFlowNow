@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f8e1ee76-ede2-4873-af30-21a4ddeb0841</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>7_vgg.py</StartupFile>
+    <StartupFile>0_graph.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>LearnTensorFlowNow</Name>
     <RootNamespace>LearnTensorFlowNow</RootNamespace>
-    <InterpreterId>Global|VisualStudio|Josh</InterpreterId>
+    <InterpreterId>Global|ContinuumAnalytics|Anaconda36-64</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,9 +22,15 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|Josh" />
+    <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda36-64" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_graph.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="0_plotting.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="1_basic.py">
       <SubType>Code</SubType>
     </Compile>
