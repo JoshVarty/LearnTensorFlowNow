@@ -26,7 +26,7 @@ with graph.as_default():
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
-    learning_rate = 0.001
+    learning_rate = 0.0001
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
