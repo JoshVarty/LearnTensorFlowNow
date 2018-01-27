@@ -37,6 +37,7 @@
     <Compile Include="2_graph.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="3_deeper_graph.py" />
     <Compile Include="3_deeper.py">
       <SubType>Code</SubType>
     </Compile>
