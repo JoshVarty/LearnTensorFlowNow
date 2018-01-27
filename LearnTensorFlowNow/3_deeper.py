@@ -12,6 +12,7 @@ with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 784))
     labels = tf.placeholder(tf.float32, shape=(None, 10))
 
+    #Add our three layers
     layer1_weights = tf.Variable(tf.random_normal([784, 500]))
     layer1_bias = tf.Variable(tf.zeros([500]))
     layer1_output = tf.nn.relu(tf.matmul(input, layer1_weights) + layer1_bias)
@@ -26,10 +27,10 @@ with graph.as_default():
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
+    #Use a smaller learning rate
     learning_rate = 0.0001
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
-    #Add a few nodes to calculate accuracy and optionally retrieve predictions
     predictions = tf.nn.softmax(logits)
     correct_prediction = tf.equal(tf.argmax(labels, 1), tf.argmax(predictions, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -68,4 +69,3 @@ with graph.as_default():
 
         print("Test Cost: ", total_cost / num_test_batches)
         print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
-
