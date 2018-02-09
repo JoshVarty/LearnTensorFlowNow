@@ -16,31 +16,31 @@ with graph.as_default():
 
     layer1_weights = tf.Variable(tf.random_normal([3, 3, 1, 64]))
     layer1_bias = tf.Variable(tf.zeros([64]))
-    net = tf.nn.conv2d(input, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer1_bias
+    layer1_conv = tf.nn.conv2d(input, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
+    layer1_out = tf.nn.relu(layer1_conv + layer1_bias)
     
     layer2_weights = tf.Variable(tf.random_normal([3, 3, 64, 64]))
     layer2_bias = tf.Variable(tf.zeros([64]))
-    net = tf.nn.conv2d(net, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer2_bias
+    layer2_conv = tf.nn.conv2d(layer1_out, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
+    layer2_out = tf.nn.relu(layer2_conv + layer2_bias)
 
-    net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+    pool1 = tf.nn.max_pool(layer2_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
     
     layer3_weights = tf.Variable(tf.random_normal([3, 3, 64, 128]))
     layer3_bias = tf.Variable(tf.zeros([128]))
-    net = tf.nn.conv2d(net, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer3_bias
+    layer3_conv = tf.nn.conv2d(pool1, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
+    layer3_out = tf.nn.relu(layer3_conv + layer3_bias)
     
     layer4_weights = tf.Variable(tf.random_normal([3, 3, 128, 128]))
     layer4_bias = tf.Variable(tf.zeros([128]))
-    net = tf.nn.conv2d(net, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer4_bias
+    layer4_conv = tf.nn.conv2d(layer3_out, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
+    layer4_out = tf.nn.relu(layer4_conv + layer4_bias)
 
-    net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+    pool2 = tf.nn.max_pool(layer4_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
 
-    shape = net.shape.as_list()
+    shape = pool2.shape.as_list()
     fc = shape[1] * shape[2] * shape[3]
-    reshape = tf.reshape(net, [-1, fc])
+    reshape = tf.reshape(pool2, [-1, fc])
     fc_weights = tf.Variable(tf.random_normal([fc, 10]))
     fc_bias = tf.Variable(tf.zeros([10]))
     logits = tf.matmul(reshape, fc_weights) + fc_bias
