@@ -80,6 +80,7 @@ with graph.as_default():
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
     predictions = tf.nn.softmax(logits)
+    tf.summary.histogram("predictions", predictions)
     correct_prediction = tf.equal(tf.argmax(labels, 1), tf.argmax(predictions, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
