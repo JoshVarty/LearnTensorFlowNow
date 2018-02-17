@@ -46,7 +46,7 @@ with graph.as_default():
         layer3_out = tf.nn.relu(layer3_conv + layer3_bias)
         tf.summary.histogram("activations", layer3_out)
     
-    with tf.name_scope("layer3"):
+    with tf.name_scope("layer4"):
         layer4_weights = tf.Variable(tf.random_normal([3, 3, 128, 128]))
         layer4_bias = tf.Variable(tf.zeros([128]))
         layer4_conv = tf.nn.conv2d(layer3_out, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
