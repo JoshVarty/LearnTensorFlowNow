@@ -25,7 +25,7 @@ with graph.as_default():
     labels = tf.placeholder(tf.float32, shape=(None, 10))
 
     with tf.name_scope("layer1"):
-        layer1_weights = tf.Variable(tf.random_normal([3, 3, 1, 64])*0.01)
+        layer1_weights = tf.Variable(tf.random_normal([3, 3, 1, 64]))
         layer1_bias = tf.Variable(tf.zeros([64]))
         layer1_conv = tf.nn.conv2d(input, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
         tf.summary.histogram("layer1_conv", layer1_conv)
@@ -33,7 +33,7 @@ with graph.as_default():
         tf.summary.histogram("activations", layer1_out)
     
     with tf.name_scope("layer2"):
-        layer2_weights = tf.Variable(tf.random_normal([3, 3, 64, 64])*0.01)
+        layer2_weights = tf.Variable(tf.random_normal([3, 3, 64, 64]))
         layer2_bias = tf.Variable(tf.zeros([64]))
         layer2_conv = tf.nn.conv2d(layer1_out, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
         tf.summary.histogram("layer2_conv", layer2_conv)
@@ -44,7 +44,7 @@ with graph.as_default():
         pool1 = tf.nn.max_pool(layer2_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
     
     with tf.name_scope("layer3"):
-        layer3_weights = tf.Variable(tf.random_normal([3, 3, 64, 128])*0.01)
+        layer3_weights = tf.Variable(tf.random_normal([3, 3, 64, 128]))
         layer3_bias = tf.Variable(tf.zeros([128]))
         layer3_conv = tf.nn.conv2d(pool1, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
         tf.summary.histogram("layer3_conv", layer3_conv)
@@ -52,7 +52,7 @@ with graph.as_default():
         tf.summary.histogram("activations", layer3_out)
     
     with tf.name_scope("layer4"):
-        layer4_weights = tf.Variable(tf.random_normal([3, 3, 128, 128])*0.01)
+        layer4_weights = tf.Variable(tf.random_normal([3, 3, 128, 128]))
         layer4_bias = tf.Variable(tf.zeros([128]))
         layer4_conv = tf.nn.conv2d(layer3_out, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
         tf.summary.histogram("layer4_conv", layer4_conv)
