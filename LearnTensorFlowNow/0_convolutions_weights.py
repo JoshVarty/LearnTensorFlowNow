@@ -26,6 +26,7 @@ with graph.as_default():
         layer1_weights = tf.Variable(tf.random_normal([3, 3, 1, 64]))
         layer1_bias = tf.Variable(tf.zeros([64]))
         layer1_conv = tf.nn.conv2d(input, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
+        tf.summary.histogram("pre-activations", layer1_conv)
         layer1_out = tf.nn.relu(layer1_conv + layer1_bias)
         tf.summary.histogram("activations", layer1_out)
     
@@ -33,6 +34,7 @@ with graph.as_default():
         layer2_weights = tf.Variable(tf.random_normal([3, 3, 64, 64]))
         layer2_bias = tf.Variable(tf.zeros([64]))
         layer2_conv = tf.nn.conv2d(layer1_out, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
+        tf.summary.histogram("pre-activations", layer2_conv)
         layer2_out = tf.nn.relu(layer2_conv + layer2_bias)
         tf.summary.histogram("activations", layer2_out)
 
@@ -43,6 +45,7 @@ with graph.as_default():
         layer3_weights = tf.Variable(tf.random_normal([3, 3, 64, 128]))
         layer3_bias = tf.Variable(tf.zeros([128]))
         layer3_conv = tf.nn.conv2d(pool1, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
+        tf.summary.histogram("pre-activations", layer3_conv)
         layer3_out = tf.nn.relu(layer3_conv + layer3_bias)
         tf.summary.histogram("activations", layer3_out)
     
@@ -50,6 +53,7 @@ with graph.as_default():
         layer4_weights = tf.Variable(tf.random_normal([3, 3, 128, 128]))
         layer4_bias = tf.Variable(tf.zeros([128]))
         layer4_conv = tf.nn.conv2d(layer3_out, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
+        tf.summary.histogram("pre-activations", layer4_conv)
         layer4_out = tf.nn.relu(layer4_conv + layer4_bias)
         tf.summary.histogram("activations", layer4_out)
 
