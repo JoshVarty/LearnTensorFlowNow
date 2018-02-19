@@ -66,7 +66,7 @@ with graph.as_default():
         shape = pool2.shape.as_list()
         fc = shape[1] * shape[2] * shape[3]
         reshape = tf.reshape(pool2, [-1, fc])
-        fc_weights = tf.get_variable("fully_connected_weights", [fc, 10], initializer=tf.contrib.layers.variance_scaling_initializer())
+        fc_weights = tf.get_variable("fully_connected_weights", [fc, 10], initializer=tf.contrib.layers.xavier_initializer())
         fc_bias = tf.Variable(tf.zeros([10]))
         logits = tf.matmul(reshape, fc_weights) + fc_bias
         tf.summary.histogram("logits", logits)
