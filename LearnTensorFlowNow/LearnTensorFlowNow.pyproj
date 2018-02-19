@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f8e1ee76-ede2-4873-af30-21a4ddeb0841</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>0_convolutions_weights.py</StartupFile>
+    <StartupFile>0_convolutions_weights_initialization.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,7 @@
     <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda36-64" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_convolutions_weights_initialization.py" />
     <Compile Include="0_graph.py">
       <SubType>Code</SubType>
     </Compile>
