@@ -75,7 +75,7 @@ with graph.as_default():
         cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
     with tf.name_scope("optimizer"):
-        learning_rate = 0.0000001
+        learning_rate = 0.001
         optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
@@ -116,7 +116,7 @@ with graph.as_default():
             x = batch_images.shape
             feed_dict = {input: batch_images, labels: batch_labels}
 
-            _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
+            c, acc = session.run([cost, accuracy], feed_dict=feed_dict)
             total_cost = total_cost + c
             total_accuracy = total_accuracy + acc
 
