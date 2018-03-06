@@ -78,12 +78,12 @@ with graph.as_default():
     reshaped_pool4 = tf.reshape(pool4, [-1, newShape])
 
     fc1_weights = tf.get_variable("layer11_weights", [newShape, 4096], initializer=tf.contrib.layers.variance_scaling_initializer())
-    fc1_bias =  tf.zeros(tf.zeros([4096]))
+    fc1_bias =  tf.Variable(tf.zeros([4096]))
     fc1_out = tf.nn.relu(tf.matmul(reshaped_pool4, fc1_weights) + fc1_bias)
 
     fc2_weights = tf.get_variable("layer12_weights", [4096, 10], initializer=tf.contrib.layers.xavier_initializer())
-    fc2_bias =  tf.zeros(tf.zeros([10]))
-    logits = tf.matmul(net, fc2_weights) + fc2_bias
+    fc2_bias =  tf.Variable(tf.zeros([10]))
+    logits = tf.matmul(fc1_out, fc2_weights) + fc2_bias
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
