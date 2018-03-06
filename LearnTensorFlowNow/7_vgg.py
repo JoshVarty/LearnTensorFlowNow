@@ -112,7 +112,6 @@ with graph.as_default():
                 print("Cost: ", c)
                 print("Accuracy: ", acc * 100.0, "%")
 
-
         #Test 
         num_test_batches = int(len(test_images) / 100)
         total_accuracy = 0
@@ -121,7 +120,6 @@ with graph.as_default():
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             batch_images = test_images[offset:(offset + batch_size)]
             batch_labels = test_labels[offset:(offset + batch_size)]
-            x = batch_images.shape
             feed_dict = {input: batch_images, labels: batch_labels}
 
             _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
@@ -130,6 +128,3 @@ with graph.as_default():
 
         print("Test Cost: ", total_cost / num_test_batches)
         print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
-
-
-
