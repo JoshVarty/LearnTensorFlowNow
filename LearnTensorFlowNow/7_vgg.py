@@ -8,89 +8,81 @@ train_labels = mnist.train.labels
 test_images = np.reshape(mnist.test.images, (-1, 28, 28, 1))
 test_labels = mnist.test.labels
 
-def bias_variable(name, shape):
-    return tf.get_variable(name, shape, initializer=tf.constant_initializer(0))
-
-def relu_weight_layer(name, shape):
-    return tf.get_variable(name, shape, initializer = tf.contrib.layers.variance_scaling_initializer())
-
-def softmax_weight_layer(name, shape):
-    return tf.get_variable(name, shape, initializer = tf.contrib.layers.xavier_initializer())
-
 graph = tf.Graph()
 with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
     labels = tf.placeholder(tf.float32, shape=(None, 10))
 
-    net = tf.image.resize_image_with_crop_or_pad(input, target_height=32, target_width=32)
+    padded_input = tf.image.resize_image_with_crop_or_pad(input, target_height=32, target_width=32)
 
-    layer1_weights = relu_weight_layer("w_layer1", [3, 3, 1, 64])
-    layer1_bias = bias_variable("b_layer1", [64])
-    net = tf.nn.conv2d(net, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer1_bias
+    layer1_weights = tf.get_variable("layer1_weights", [3, 3, 1, 64], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer1_bias = tf.Variable(tf.zeros([64]))
+    layer1_conv = tf.nn.conv2d(padded_input, filter=layer1_weights, strides=[1,1,1,1], padding='SAME')
+    layer1_out = tf.nn.relu(layer1_conv + layer1_bias)
     
-    layer2_weights = relu_weight_layer("w_layer2", [3, 3, 64, 64])
-    layer2_bias = bias_variable("b_layer2", [64])
-    net = tf.nn.conv2d(net, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer2_bias
+    layer2_weights = tf.get_variable("layer2_weights", [3, 3, 64, 64], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer2_bias = tf.Variable(tf.zeros([64]))
+    layer2_conv = tf.nn.conv2d(layer1_out, filter=layer2_weights, strides=[1,1,1,1], padding='SAME')
+    layer2_out = tf.nn.relu(layer2_conv + layer2_bias)
 
-    net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+    pool1 = tf.nn.max_pool(layer2_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
     
-    layer3_weights = relu_weight_layer("w_layer3", [3, 3, 64, 128])
-    layer3_bias = bias_variable("b_layer3", [128])
-    net = tf.nn.conv2d(net, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer3_bias
+    layer3_weights = tf.get_variable("layer3_weights", [3, 3, 64, 128], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer3_bias = tf.Variable(tf.zeros([128]))
+    layer3_conv = tf.nn.conv2d(pool1, filter=layer3_weights, strides=[1,1,1,1], padding='SAME')
+    layer3_out = tf.nn.relu(layer3_conv + layer3_bias)
+
+    layer4_weights = tf.get_variable("layer4_weights", [3, 3, 128, 128], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer4_bias = tf.Variable(tf.zeros([128]))
+    layer4_conv = tf.nn.conv2d(layer3_out, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
+    layer4_out = tf.nn.relu(layer4_conv + layer4_bias)
+
+    pool2 = tf.nn.max_pool(layer4_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+
+    layer5_weights = tf.get_variable("layer5_weights", [3, 3, 128, 256], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer5_bias = tf.Variable(tf.zeros([256]))
+    layer5_conv = tf.nn.conv2d(layer4_out, filter=layer5_weights, strides=[1,1,1,1], padding='SAME')
+    layer5_out = tf.nn.relu(layer5_conv + layer5_bias)
     
-    layer4_weights = relu_weight_layer("w_layer4", [3, 3, 128, 128])
-    layer4_bias = bias_variable("b_layer4", [128])
-    net = tf.nn.conv2d(net, filter=layer4_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer4_bias
+    layer6_weights = tf.get_variable("layer6_weights", [3, 3, 256, 256], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer6_bias = tf.Variable(tf.zeros([256]))
+    layer6_conv = tf.nn.conv2d(layer5_out, filter=layer6_weights, strides=[1,1,1,1], padding='SAME')
+    layer6_out = tf.nn.relu(layer6_conv + layer6_bias)
 
-    net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+    layer7_weights = tf.get_variable("layer7_weights", [3, 3, 256, 256], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer7_bias = tf.Variable(tf.zeros([256]))
+    layer7_conv = tf.nn.conv2d(layer6_out, filter=layer7_weights, strides=[1,1,1,1], padding='SAME')
+    layer7_out = tf.nn.relu(layer7_conv + layer7_bias)
 
-    layer5_weights = relu_weight_layer("w_layer5", [3, 3, 128, 256])
-    layer5_bias = bias_variable("b_layer5", [256])
-    net = tf.nn.conv2d(net, filter=layer5_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer5_bias
+    pool3 = tf.nn.max_pool(layer7_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+
+    layer8_weights = tf.get_variable("layer8_weights", [3, 3, 256, 512], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer8_bias = tf.Variable(tf.zeros([512]))
+    layer8_conv = tf.nn.conv2d(pool3, filter=layer8_weights, strides=[1,1,1,1], padding='SAME')
+    layer8_out = tf.nn.relu(layer8_conv + layer8_bias)
     
-    layer6_weights = relu_weight_layer("w_layer6", [3, 3, 256, 256])
-    layer6_bias = bias_variable("b_layer6", [256])
-    net = tf.nn.conv2d(net, filter=layer6_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer6_bias
+    layer9_weights = tf.get_variable("layer9_weights", [3, 3, 512, 512], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer9_bias = tf.Variable(tf.zeros([512]))
+    layer9_conv = tf.nn.conv2d(layer8_out, filter=layer9_weights, strides=[1,1,1,1], padding='SAME')
+    layer9_out = tf.nn.relu(layer9_conv + layer9_bias)
 
-    layer7_weights = relu_weight_layer("w_layer7", [3, 3, 256, 256])
-    layer7_bias = bias_variable("b_layer7", [256])
-    net = tf.nn.conv2d(net, filter=layer7_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer7_bias
-
-    net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
-
-    layer8_weights = relu_weight_layer("w_layer8", [3, 3, 256, 512])
-    layer8_bias = bias_variable("b_layer8", [512])
-    net = tf.nn.conv2d(net, filter=layer8_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer8_bias
+    layer10_weights = tf.get_variable("layer10_weights", [3, 3, 512, 512], initializer=tf.contrib.layers.variance_scaling_initializer())
+    layer10_bias = tf.Variable(tf.zeros([512]))
+    layer10_conv = tf.nn.conv2d(layer9_out, filter=layer10_weights, strides=[1,1,1,1], padding='SAME')
+    layer10_out = tf.nn.relu(layer10_conv + layer10_bias)
     
-    layer9_weights = relu_weight_layer("w_layer9", [3, 3, 512, 512])
-    layer9_bias = bias_variable("b_layer9", [512])
-    net = tf.nn.conv2d(net, filter=layer9_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer9_bias
+    pool4 = tf.nn.max_pool(layer10_out, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
 
-    layer10_weights = relu_weight_layer("w_layer10", [3, 3, 512, 512])
-    layer10_bias = bias_variable("b_layer10", [512])
-    net = tf.nn.conv2d(net, filter=layer10_weights, strides=[1,1,1,1], padding='SAME')
-    net = tf.nn.relu(net) + layer10_bias
-    
-    net = tf.nn.max_pool(net, ksize=[1,2,2,1], strides=[1,2,2,1], padding='VALID')
+    shape = pool4.shape.as_list()
+    newShape = shape[1] * shape[2] * shape[3]
+    reshaped_pool4 = tf.reshape(pool4, [-1, newShape])
 
-    shape = net.shape.as_list()
-    fc = shape[1] * shape[2] * shape[3]
-    net = tf.reshape(net, [-1, fc])
-    fc1_weights = softmax_weight_layer("w_fc1", [fc, 4096])
-    fc1_bias =  bias_variable("b_fc1", [4096])
-    net = tf.matmul(net, fc1_weights) + fc1_bias
+    fc1_weights = tf.get_variable("layer11_weights", [newShape, 4096], initializer=tf.contrib.layers.variance_scaling_initializer())
+    fc1_bias =  tf.zeros(tf.zeros([4096]))
+    fc1_out = tf.nn.relu(tf.matmul(reshaped_pool4, fc1_weights) + fc1_bias)
 
-    fc2_weights = softmax_weight_layer("w_fc2", [4096, 10])
-    fc2_bias =  bias_variable("b_fc2", [10])
+    fc2_weights = tf.get_variable("layer12_weights", [4096, 10], initializer=tf.contrib.layers.xavier_initializer())
+    fc2_bias =  tf.zeros(tf.zeros([10]))
     logits = tf.matmul(net, fc2_weights) + fc2_bias
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
