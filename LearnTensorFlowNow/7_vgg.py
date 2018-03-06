@@ -41,7 +41,7 @@ with graph.as_default():
 
     layer5_weights = tf.get_variable("layer5_weights", [3, 3, 128, 256], initializer=tf.contrib.layers.variance_scaling_initializer())
     layer5_bias = tf.Variable(tf.zeros([256]))
-    layer5_conv = tf.nn.conv2d(layer4_out, filter=layer5_weights, strides=[1,1,1,1], padding='SAME')
+    layer5_conv = tf.nn.conv2d(pool2, filter=layer5_weights, strides=[1,1,1,1], padding='SAME')
     layer5_out = tf.nn.relu(layer5_conv + layer5_bias)
     
     layer6_weights = tf.get_variable("layer6_weights", [3, 3, 256, 256], initializer=tf.contrib.layers.variance_scaling_initializer())
