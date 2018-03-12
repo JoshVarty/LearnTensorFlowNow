@@ -97,8 +97,11 @@ with graph.as_default():
 
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
+        
+        #Save the model
+        saver = tf.train.Saver()
 
-        num_steps = 1000
+        num_steps = 20
         batch_size = 100
         for step in range(num_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
@@ -108,9 +111,10 @@ with graph.as_default():
 
             _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
 
-            if step % 100 == 0: 
+            if step % 5 == 0: 
                 print("Cost: ", c)
                 print("Accuracy: ", acc * 100.0, "%")
+                saver.save(session, "/tmp/vggnet/vgg_net.ckpt")
 
         #Test 
         num_test_batches = int(len(test_images) / 100)
@@ -129,7 +133,6 @@ with graph.as_default():
         print("Test Cost: ", total_cost / num_test_batches)
         print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
 
-        #Save the model
-        saver = tf.train.Saver()
+        #Save the final model
         save_path = saver.save(session, "/tmp/vggnet/vgg_net.ckpt")
         print("Saved model at: ", save_path)
