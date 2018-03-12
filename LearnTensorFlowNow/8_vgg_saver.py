@@ -129,9 +129,7 @@ with graph.as_default():
         print("Test Cost: ", total_cost / num_test_batches)
         print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
 
-        #Save the modle
+        #Save the model
         saver = tf.train.Saver()
-        save_path = saver.save(session, "/tmp/vgg_net.ckpt")
+        save_path = saver.save(session, "/tmp/vggnet/vgg_net.ckpt")
         print("Saved model at: ", save_path)
-        print("Type: ", type(save_path))
-
