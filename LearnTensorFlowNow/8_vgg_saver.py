@@ -114,7 +114,7 @@ with graph.as_default():
             if step % 5 == 0: 
                 print("Cost: ", c)
                 print("Accuracy: ", acc * 100.0, "%")
-                saver.save(session, "/tmp/vggnet/vgg_net.ckpt")
+                saver.save(session, "/tmp/vggnet/vgg_net.ckpt", global_step=step)
 
         #Test 
         num_test_batches = int(len(test_images) / 100)
