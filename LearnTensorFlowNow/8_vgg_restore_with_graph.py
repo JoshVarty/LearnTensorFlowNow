@@ -85,15 +85,15 @@ with graph.as_default():
     fc2_bias =  tf.Variable(tf.zeros([10]))
     logits = tf.matmul(fc1_out, fc2_weights) + fc2_bias
 
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels), name="cost")
 
     learning_rate = 0.001
     optimizer = tf.train.AdamOptimizer(learning_rate).minimize(cost)
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
-    predictions = tf.nn.softmax(logits)
+    predictions = tf.nn.softmax(logits, name="predictions")
     correct_prediction = tf.equal(tf.argmax(labels, 1), tf.argmax(predictions, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name="accuracy")
 
     with tf.Session() as session:
         #Restore Model
