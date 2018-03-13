@@ -131,6 +131,7 @@ with graph.as_default():
             saver.restore(session, "/tmp/vggnet/vgg_net.ckpt")
 
             #Test 
+            batch_size = 100
             num_test_batches = int(len(test_images) / 100)
             total_accuracy = 0
             total_cost = 0
