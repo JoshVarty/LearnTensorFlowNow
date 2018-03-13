@@ -6,9 +6,13 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 test_images = np.reshape(mnist.test.images, (-1, 28, 28, 1))
 test_labels = mnist.test.labels
 
-with tf.Session() as session:
+graph = tf.Graph()
+with tf.Session(graph=graph) as session:
     saver = tf.train.import_meta_graph('/tmp/vggnet/vgg_net.ckpt.meta')
     saver.restore(session, '/tmp/vggnet/vgg_net.ckpt')
+
+    input = graph.get_tensor_by_name("input:0")
+    labels = graph.get_tensor_by_name("labels:0")
 
     #Now we test our restored model just as before 
     batch_size = 100
@@ -19,7 +23,7 @@ with tf.Session() as session:
         offset = (step * batch_size) % (test_labels.shape[0] - batch_size)
         batch_images = test_images[offset:(offset + batch_size)]
         batch_labels = test_labels[offset:(offset + batch_size)]
-        feed_dict = {"input:0": batch_images, "labels:0": batch_labels}
+        feed_dict = {input: batch_images, labels: batch_labels}
 
         c, acc = session.run(['cost:0', 'accuracy:0'], feed_dict=feed_dict)
         total_cost = total_cost + c
