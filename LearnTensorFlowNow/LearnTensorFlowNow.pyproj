@@ -52,7 +52,9 @@
     <Compile Include="6_optimizers.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="8_vgg_saver.py" />
+    <Compile Include="8_vgg_saver_multiple.py" />
+    <Compile Include="8_vgg_restore_with_graph.py" />
+    <Compile Include="8_vgg_saver_single.py" />
     <Compile Include="7_vgg.py">
       <SubType>Code</SubType>
     </Compile>

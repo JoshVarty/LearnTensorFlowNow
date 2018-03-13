@@ -8,8 +8,6 @@ train_labels = mnist.train.labels
 test_images = np.reshape(mnist.test.images, (-1, 28, 28, 1))
 test_labels = mnist.test.labels
 
-is_training = False
-
 graph = tf.Graph()
 with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
@@ -97,54 +95,28 @@ with graph.as_default():
     correct_prediction = tf.equal(tf.argmax(labels, 1), tf.argmax(predictions, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-    if is_training == True:
 
-        with tf.Session(graph=graph) as session:
-            tf.global_variables_initializer().run()
-            
-            #Save the model
-            saver = tf.train.Saver()
+    with tf.Session(graph=graph) as session:
+        tf.global_variables_initializer().run()
+        
+        #Save the model
+        saver = tf.train.Saver()
 
-            num_steps = 20
-            batch_size = 100
-            for step in range(num_steps):
-                offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
-                batch_images = train_images[offset:(offset + batch_size), :]
-                batch_labels = train_labels[offset:(offset + batch_size), :]
-                feed_dict = {input: batch_images, labels: batch_labels}
+        num_steps = 20
+        batch_size = 100
+        for step in range(num_steps):
+            offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
+            batch_images = train_images[offset:(offset + batch_size), :]
+            batch_labels = train_labels[offset:(offset + batch_size), :]
+            feed_dict = {input: batch_images, labels: batch_labels}
 
-                _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
+            _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
 
-                if step % 5 == 0: 
-                    print("Cost: ", c)
-                    print("Accuracy: ", acc * 100.0, "%")
-                    saver.save(session, "/tmp/vggnet/vgg_net.ckpt", global_step=step)
+            if step % 5 == 0: 
+                print("Cost: ", c)
+                print("Accuracy: ", acc * 100.0, "%")
+                saver.save(session, "/tmp/vggnet/vgg_net.ckpt", global_step=step)
 
-
-            #Save the final model
-            save_path = saver.save(session, "/tmp/vggnet/vgg_net.ckpt")
-            print("Saved model at: ", save_path)
-    else:
-        with tf.Session() as session:
-            #Restore Model
-            saver = tf.train.Saver()
-            saver.restore(session, "/tmp/vggnet/vgg_net.ckpt")
-
-            #Test 
-            batch_size = 100
-            num_test_batches = int(len(test_images) / 100)
-            total_accuracy = 0
-            total_cost = 0
-            for step in range(num_test_batches):
-                offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
-                batch_images = test_images[offset:(offset + batch_size)]
-                batch_labels = test_labels[offset:(offset + batch_size)]
-                feed_dict = {input: batch_images, labels: batch_labels}
-
-                _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
-                total_cost = total_cost + c
-                total_accuracy = total_accuracy + acc
-
-            print("Test Cost: ", total_cost / num_test_batches)
-            print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
-
+        #Save the final model
+        save_path = saver.save(session, "/tmp/vggnet/vgg_net.ckpt")
+        print("Saved model at: ", save_path)
