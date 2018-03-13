@@ -8,7 +8,7 @@ test_labels = mnist.test.labels
 
 with tf.Session() as session:
     saver = tf.train.import_meta_graph('/tmp/vggnet/vgg_net.ckpt.meta')
-    saver.restore(sess,tf.train.latest_checkpoint('./'))
+    saver.restore(session, tf.train.latest_checkpoint('./'))
 
     #Now we test our restored model just as before 
     batch_size = 100
