@@ -10,8 +10,8 @@ test_labels = mnist.test.labels
 
 graph = tf.Graph()
 with graph.as_default():
-    input = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
-    labels = tf.placeholder(tf.float32, shape=(None, 10))
+    input = tf.placeholder(tf.float32, shape=(None, 28, 28, 1), name="input")
+    labels = tf.placeholder(tf.float32, shape=(None, 10), name="labels")
 
     padded_input = tf.image.resize_image_with_crop_or_pad(input, target_height=32, target_width=32)
 
