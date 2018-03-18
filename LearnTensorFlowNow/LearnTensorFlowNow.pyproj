@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f8e1ee76-ede2-4873-af30-21a4ddeb0841</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>cifar\0_vgg.py</StartupFile>
+    <StartupFile>cifar\10_vgg.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -62,7 +62,7 @@
     <Compile Include="8_image_augmentation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="cifar\0_vgg.py">
+    <Compile Include="cifar\10_vgg.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="cifar\cifar_data_loader.py">
