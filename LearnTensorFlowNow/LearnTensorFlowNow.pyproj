@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f8e1ee76-ede2-4873-af30-21a4ddeb0841</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>7_vgg.py</StartupFile>
+    <StartupFile>cifar\0_vgg.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -62,6 +62,15 @@
     <Compile Include="8_image_augmentation.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="cifar\0_vgg.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cifar\cifar_data_loader.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cifar\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
