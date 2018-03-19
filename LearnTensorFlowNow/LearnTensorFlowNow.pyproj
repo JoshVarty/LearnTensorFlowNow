@@ -62,6 +62,7 @@
     <Compile Include="8_image_augmentation.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="cifar\0_display_examples.py" />
     <Compile Include="cifar\10_vgg.py">
       <SubType>Code</SubType>
     </Compile>

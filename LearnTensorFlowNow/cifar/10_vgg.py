@@ -92,7 +92,7 @@ with graph.as_default():
 
     #Add a few nodes to calculate accuracy and optionally retrieve predictions
     predictions = tf.nn.softmax(logits)
-    correct_prediction = tf.equal(labels, tf.cast(tf.argmax(predictions, 1), tf.int32))
+    correct_prediction = tf.equal(labels, tf.argmax(predictions, 1, output_type=tf.int32))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
     with tf.Session(graph=graph) as session:
@@ -103,9 +103,7 @@ with graph.as_default():
         for step in range(num_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             batch_images = train_images[offset:(offset + batch_size)]
-            x=  batch_images.shape
             batch_labels = train_labels[offset:(offset + batch_size)]
-            y=  batch_labels.shape
             feed_dict = {input: batch_images, labels: batch_labels}
 
             _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
