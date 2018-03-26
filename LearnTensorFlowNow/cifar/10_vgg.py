@@ -98,7 +98,7 @@ with graph.as_default():
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
 
-        num_steps = 1000
+        num_steps = 10000
         batch_size = 100
         for step in range(num_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
