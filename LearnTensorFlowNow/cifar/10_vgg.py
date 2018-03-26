@@ -122,7 +122,7 @@ with graph.as_default():
             batch_labels = test_labels[offset:(offset + batch_size)]
             feed_dict = {input: batch_images, labels: batch_labels}
 
-            _, c, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
+            c, acc = session.run([cost, accuracy], feed_dict=feed_dict)
             total_cost = total_cost + c
             total_accuracy = total_accuracy + acc
 
