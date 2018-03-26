@@ -15,7 +15,8 @@ with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
     labels = tf.placeholder(tf.int32, shape=(None), name="labels")
 
-    input_minus_mean = input - mean_image               #Subtract mean from input images
+    mean_image_tf = tf.constant(mean_image, dtype=tf.float32)
+    input_minus_mean = tf.subtract(input, mean_image)               #Subtract mean from input images
 
     layer1_weights = tf.get_variable("layer1_weights", [3, 3, 3, 64], initializer=tf.contrib.layers.variance_scaling_initializer())
     layer1_bias = tf.Variable(tf.zeros([64]))
@@ -100,7 +101,7 @@ with graph.as_default():
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
 
-        num_steps = 1000
+        num_steps = 2000
         batch_size = 100
         for step in range(num_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
