@@ -128,10 +128,3 @@ with graph.as_default():
 
         print("Test Cost: ", total_cost / num_test_batches)
         print("Test accuracy: ", total_accuracy * 100.0 / num_test_batches, "%")
-
-
-
-
-
-
-
