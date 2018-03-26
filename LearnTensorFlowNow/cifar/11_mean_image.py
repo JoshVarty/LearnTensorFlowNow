@@ -13,9 +13,9 @@ print(mean_image.shape)
 graph = tf.Graph()
 with graph.as_default():
     input = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
-    
-    input_minus_mean = input - mean_image
     labels = tf.placeholder(tf.int32, shape=(None), name="labels")
+
+    input_minus_mean = input - mean_image               #Subtract mean from input images
 
     layer1_weights = tf.get_variable("layer1_weights", [3, 3, 3, 64], initializer=tf.contrib.layers.variance_scaling_initializer())
     layer1_bias = tf.Variable(tf.zeros([64]))
